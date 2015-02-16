@@ -1,11 +1,10 @@
 <?php
 
-namespace AppBundle\Command\EmailReminder;
+namespace Command\EmailReminder;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SetEmailCommand extends Command
@@ -16,15 +15,21 @@ class SetEmailCommand extends Command
             ->setName('reminder:set')
             ->setDescription('Ustawia adres e-mail, na który wysyłane są powiadomienia.')
             ->addArgument(
-                'message',
+                'email',
                 InputArgument::REQUIRED,
-                'Wiadomość, która zostanie wysłana na e-mail'
+                'Adres e-mail'
             );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $message = $input->getArgument('message');
-        $output->writeln($message);
+        $email = $input->getArgument('email');
+
+        // Zapisuje podany e-mail w pliku tekstowym.
+        file_put_contents(__DIR__ . '/../../../email.txt', $email);
+
+        $output->writeln(
+            'Adres e-mail <info>' . $email . '</info> został zapisany.'
+        );
     }
 } 

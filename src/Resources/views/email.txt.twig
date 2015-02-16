@@ -1,0 +1,4 @@
+Masz {{ reminders|length }} nowych powiadomień.
+{% for reminder in reminders %}
+    - {{ reminder.message }}
+{% endfor %}

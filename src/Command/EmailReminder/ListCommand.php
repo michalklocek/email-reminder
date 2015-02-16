@@ -1,20 +1,17 @@
 <?php
 
-namespace AppBundle\Command\EmailReminder;
+namespace Command\EmailReminder;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ListCommand extends ContainerAwareCommand
+class ListCommand extends Command
 {
     protected $em;
 
-    public function __construct(ObjectManager $em = null)
+    public function __construct(ObjectManager $em)
     {
         parent::__construct();
         $this->em = $em;
@@ -29,12 +26,9 @@ class ListCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if ($this->em === null) {
-            $this->em = $this->getContainer()->get('doctrine')->getManager();
-        }
+        $reminders = $this->em->getRepository('Reminder')->findAll();
 
-        $reminders = $this->em->getRepository('AppBundle:Reminder')->findAll();
-
+        // Wyświetla każde powiadomienie w nowej linii.
         foreach ($reminders as $reminder) {
             $output->writeln(
                 '(' . $reminder->getId() . ') '

@@ -1,44 +1,40 @@
 <?php
 
-namespace AppBundle\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Reminder
  *
- * @ORM\Table(name="reminders")
- * @ORM\Entity
+ * @Table(name="reminders")
+ * @Entity(repositoryClass="ReminderRepository")
  */
 class Reminder
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @Column(name="id", type="integer")
+     * @Id
+     * @GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="message", type="string", length=255)
+     * @Column(name="message", type="string", length=255)
      */
     private $message;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sendAt", type="datetime")
+     * @Column(name="sendAt", type="datetime")
      */
     private $sendAt;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="sent", type="boolean")
+     * @Column(name="sent", type="boolean")
      */
     private $sent = false;
 

@@ -1,21 +1,19 @@
 <?php
 
-namespace AppBundle\Command\EmailReminder;
+namespace Command\EmailReminder;
 
-use AppBundle\Entity\Reminder;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Reminder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AddCommand extends ContainerAwareCommand
+class AddCommand extends Command
 {
     protected $em;
 
-    public function __construct(ObjectManager $em = null)
+    public function __construct(ObjectManager $em)
     {
         parent::__construct();
         $this->em = $em;
@@ -42,6 +40,7 @@ class AddCommand extends ContainerAwareCommand
     {
         $message = $input->getArgument('message');
 
+        // Jeśli format daty jest nieprawidłowy, wyświetla komunikat.
         try {
             $dateTime = new \DateTime($input->getArgument('datetime'));
         } catch (\Exception $e) {
@@ -55,10 +54,7 @@ class AddCommand extends ContainerAwareCommand
             return;
         }
 
-        if ($this->em === null) {
-            $this->em = $this->getContainer()->get('doctrine')->getManager();
-        }
-
+        // Zapisuje nowe powiadomienie.
         $reminder = new Reminder();
         $reminder->setMessage($message);
         $reminder->setSendAt($dateTime);
@@ -70,4 +66,4 @@ class AddCommand extends ContainerAwareCommand
             . '<info>' . $dateTime->format('d.m.Y H:i') . '</info>'
         );
     }
-} 
+}
